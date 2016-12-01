@@ -1,0 +1,12 @@
+This tool is used for rotate logs once a day
+
+Usage:
+    ./log_rotate_tool.sh -d /home/work/log -f [filename]
+
+Options:
+    -h  Show this message and exit
+    -d  log dir (necessary)
+    -f  log file (necessary)
+    -s  rotate size (default 5M), if the file is large then this, file while be rotated
+    -r  log rotate time (default 5), max storage number of log rotate file
+
