@@ -1,4 +1,11 @@
 #!/bin/bash
+########################################
+#	> File Name: log_rotate_tool.sh
+#	> Author: Meng Zhuo
+#	> Mail: mengzhuo@xiaomi.com
+#	> Created Time: 2016年12月01日 星期四 16时12分58秒
+########################################
+
 
 function help(){
     echo -e "This tool is used for rotate logs once a day\n"
