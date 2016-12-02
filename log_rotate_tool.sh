@@ -15,14 +15,21 @@ function help(){
     echo -e "\t-d\tlog dir (necessary)"
     echo -e "\t-f\tlog file (necessary)"
     echo -e "\t-s\trotate size (default 5M), if the file is large then this, file while be rotated"
-    echo -e "\t-r\tlog rotate time (default 5), max storage number of log rotate file"
+    echo -e "\t-r\tlog rotate time (default 5), max storage number of log rotate files"
+    echo -e "\t-H\trotate every hour"
+    echo -e "\t-D\trotate every day"
+    echo -e "\t-M\trotate every month"
+
     exit 0
 }
 
 size='5'
 rotate='5'
+day='0'
+month='*'
+hour='0'
 
-while getopts "hd:f:s:r:" Option
+while getopts "hd:f:s:r:DHM" Option
     # b and d take arguments
     #
 do
@@ -32,6 +39,9 @@ do
         f) file=$OPTARG;;
         s) size=$OPTARG;;
         r) rotate=$OPTARG;;
+        H) day='*';month='*';hour='0';;
+        D) day='0';month='*';hour='0';;
+        M) day='0';month='0';hour='0';;
     esac
 done
 shift $(($OPTIND - 1))
@@ -43,9 +53,9 @@ shift $(($OPTIND - 1))
 size=$size'M'
 
 lrfile=$dir/$file'.lr'
+cronfile=$dir/$file'_rotate_cron'
 touch $lrfile
-touch /etc/cron.d/$file'_rotate_cron'
-
+touch $cronfile
 cat <<EOF >$lrfile
 $dir/$file {
     size=$size
@@ -54,8 +64,12 @@ $dir/$file {
 }
 EOF
 
-cat <<EOF >/etc/cron.d/$file'_rotate_cron'
-0 0 * * * /usr/sbin/logrotate  $lrfile
+historycron=`crontab -l`
+
+#cat <<EOF >/etc/cron.d/$file'_rotate_cron'
+cat <<EOF >$cronfile
+$historycron
+$hour $day $month * * /usr/sbin/logrotate  $lrfile
 EOF
 
-crontab /etc/cron.d/$file'_rotate_cron'
+crontab $cronfile

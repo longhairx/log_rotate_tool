@@ -8,6 +8,9 @@ Options:
     -d  log dir (necessary)
     -f  log file (necessary)
     -s  rotate size (default 5M), if the file is large then this, file while be rotated
-    -r  log rotate time (default 5), max storage number of log rotate file
+    -r  log rotate time (default 5), max storage number of log rotate files
+    -H  rotate every hour
+    -D  rotate every day
+    -M  rotate every month
 
 from xiaomi
